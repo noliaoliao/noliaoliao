@@ -235,106 +235,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/27/glance/" itemprop="url">
-                  glance镜像上传分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2016-07-27T11:42:51+08:00" content="2016-07-27">
-              2016-07-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h2><ul>
-<li>阅读glance API v2的代码流程<h2 id="API-v2"><a href="#API-v2" class="headerlink" title="API v2"></a>API v2</h2></li>
-</ul>
-<p>v1版本的glance API有两个WSGI服务，分别是glance-api和glance-registry，不同之处是glance-api对外提供RestFul API服务，而glance-registry则是在内部被glance-api调用来处理具体的关于数据库的请求，当glance-api接收到涉及SQL Database的操作请求时，会调用registry-clinet并生成HTTP指令，然后转发给glance-registry进行处理。v2版本的API中将glance-api和glance-registry合并到了一起，减少了其中的一个环节。此外，v2版本还支持镜像location的添加、删除和修改、metadata、namespace、image tag等操作。Liberty版中看到了API v3，v3似乎要做成独立的服务，而不是像v1和v2那样只专注于提供镜像相关的服务。看了下在Liberty系列中使用的glanceclinet 1.1.1已经将API v2作为默认的API版本了。<br>api_version = int(options.os_image_api_version or url_version or 2)<br>从glance-api-paste.ini可以看到API v2的入口为glance.api.v2.Router，整体流程和API v1一致。之前分析了v1版本的镜像相关操作，下面阅读下v2版本中镜像操作的代码流程。</p>
-<h2 id="镜像创建"><a href="#镜像创建" class="headerlink" title="镜像创建"></a>镜像创建</h2><p>通过glance CLI提供的命令创建一个镜像，加–debug参数查看发送的请求。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#glance --debug image-create --file centos-7.0-8G.img --disk-format raw --container-format bare --visibility public</div></pre></td></tr></table></figure></p>
-<p>可以看到发送了三个请求。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">curl -g -i -X GET ... http://192.168.63.100:9292/v2/schemas/image</div><div class="line">curl -g -i -X POST ... -d &apos;&#123;&quot;container-format&quot;:&quot;bar&quot;, &quot;disk-format&quot;:&quot;raw &quot;, &quot;visibility&quot;:&quot;public&quot;&#125;&apos; http://192.168.63.100:9292/v2/images</div><div class="line">curl -g -i -X PUT ... http://192.168.63.100:9292/v2/images/21ca871d-a7d e-870a-99fa-43bc56131f4d/file</div></pre></td></tr></table></figure></p>
-<p>第一个请求</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2016/07/15/hello-world/" itemprop="url">
                   Hello World
                 </a>
@@ -457,20 +357,13 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">1</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
 
           
 
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">Tags</span>
-              </a>
-            </div>
           
 
         </nav>
